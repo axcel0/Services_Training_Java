@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -16,7 +17,7 @@ public class BoundService extends Service {
 
     public static final String TIMER_BR = "com.polytron.services.timer";
     private final IBinder binder = new LocalBinder();
-    private final Handler handler = new Handler();
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private int counter = 0;
     private boolean isRunning = false;
 
