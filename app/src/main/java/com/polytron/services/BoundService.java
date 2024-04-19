@@ -60,7 +60,9 @@ public class BoundService extends Service {
     }
 
     public void resetTimer() {
-        Log.d("BoundService", "resetTimer() called.");
         counter = 0;
+        Intent intent = new Intent(TIMER_BR);
+        intent.putExtra("count", counter);
+        sendBroadcast(intent);
     }
 }
