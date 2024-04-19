@@ -2,49 +2,63 @@ package com.polytron.services;
 
 import android.app.Service;
 import android.content.Intent;
-import android.media.MediaPlayer;
+import android.os.Binder;
 import android.os.IBinder;
+import android.os.Handler;
+import android.content.IntentFilter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 
 import androidx.annotation.Nullable;
 
 public class BoundService extends Service {
 
+    public static final String TIMER_BR = "com.polytron.services.timer";
     private final IBinder binder = new LocalBinder();
+    private final Handler handler = new Handler();
+    private int counter = 0;
+    private boolean isRunning = false;
 
-    private MediaPlayer mediaPlayer;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
     }
 
-    public class LocalBinder extends android.os.Binder {
+    public class LocalBinder extends Binder {
         BoundService getService() {
             return BoundService.this;
         }
     }
 
-    private void startAudio() {
-        String audioUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setOnPreparedListener(mp -> mediaPlayer.start());
-        try {
-            mediaPlayer.setDataSource(audioUrl);
-            mediaPlayer.prepareAsync();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            Intent intent = new Intent(TIMER_BR);
+            intent.putExtra("count", counter);
+            sendBroadcast(intent);
+            if (isRunning) {
+                counter++;
+                handler.postDelayed(this, 1000);
+            }
+        }
+    };
+
+    public void startTimer() {
+        if (!isRunning) {
+            isRunning = true;
+            handler.postDelayed(runnable, 1000);
         }
     }
-    public void pauseAudio() {
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
+
+    public void stopTimer() {
+        if (isRunning) {
+            isRunning = false;
+            handler.removeCallbacks(runnable);
         }
     }
-    public void resumeAudio() {
-        if (mediaPlayer == null) {
-            startAudio();
-        } else if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
-        }
+
+    public void resetTimer() {
+        counter = 0;
     }
 }

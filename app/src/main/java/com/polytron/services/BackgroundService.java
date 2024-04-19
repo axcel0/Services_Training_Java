@@ -8,6 +8,7 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -53,9 +54,8 @@ public class BackgroundService extends Service {
             mediaPlayer.prepare();
             mediaPlayer.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("BackgroundService", "Error playing audio", e);
         }
         Toast.makeText(this, "Playing audio", Toast.LENGTH_SHORT).show();
     }
-
 }
