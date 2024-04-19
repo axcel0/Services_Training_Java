@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -59,6 +60,7 @@ public class BoundService extends Service {
     }
 
     public void resetTimer() {
+        Log.d("BoundService", "resetTimer() called.");
         counter = 0;
     }
 }

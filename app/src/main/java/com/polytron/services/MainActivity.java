@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BoundService boundService;
+    public static BoundService boundService;
     private boolean isBound = false;
     private TextView textView;
 
@@ -61,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         resetButton.setOnClickListener(v -> {
-            if (isBound) {
-                boundService.resetTimer();
-            }
+            boundService.resetTimer();
         });
     }
 
