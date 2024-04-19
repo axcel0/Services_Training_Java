@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static BoundService boundService;
+    public static BoundService boundService; // Make this a public static variable
     private boolean isBound = false;
     private TextView textView;
 
@@ -62,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         resetButton.setOnClickListener(v -> {
-            boundService.resetTimer();
+            if (isBound) {
+                boundService.resetTimer();
+            }
         });
     }
 
